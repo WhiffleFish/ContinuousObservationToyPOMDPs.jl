@@ -10,12 +10,12 @@ POMDPs.isterminal(p::SimpleLightDark, s::Number) = !(s in -p.radius:p.radius)
 
 const ACTIONS = [-10, -1, 0, 1, 10]
 POMDPs.actions(p::SimpleLightDark) = ACTIONS
-POMDPs.n_actions(p::SimpleLightDark) = length(actions(p))
+n_actions(p::SimpleLightDark) = length(actions(p))
 const ACTION_INDS = Dict(a=>i for (i,a) in enumerate(actions(SimpleLightDark())))
-POMDPs.actionindex(p::SimpleLightDark, a::Int) = ACTION_INDS[a]
+POMDPs.actionindex(::SimpleLightDark, a::Int) = ACTION_INDS[a]
 
 POMDPs.states(p::SimpleLightDark) = -p.radius:p.radius + 1
-POMDPs.n_states(p::SimpleLightDark) = length(states(p))
+n_states(p::SimpleLightDark) = length(states(p))
 POMDPs.stateindex(p::SimpleLightDark, s::Int) = s+p.radius+1
 
 function POMDPs.transition(p::SimpleLightDark, s::Int, a::Int) 
@@ -36,7 +36,7 @@ function POMDPs.reward(p::SimpleLightDark, s, a)
     end
 end
 
-function POMDPs.initialstate_distribution(p::SimpleLightDark)
+function POMDPs.initialstate(p::SimpleLightDark)
     ps = ones(2*div(p.radius,2)+1)
     ps /= length(ps)
     return SparseCat(div(-p.radius,2):div(p.radius,2), ps)
@@ -47,16 +47,16 @@ end
     binsize::Float64     = 1.0
 end
 
-POMDPs.generate_o(p::DSimpleLightDark, sp, rng::AbstractRNG) = floor(Int, rand(rng, observation(p.sld, sp))/p.binsize)
-POMDPs.generate_o(p::DSimpleLightDark, a, sp, rng::AbstractRNG) = generate_o(p, sp, rng)
-function POMDPs.generate_sor(p::DSimpleLightDark, s, a, rng::AbstractRNG)
+generate_o(p::DSimpleLightDark, sp, rng::AbstractRNG) = floor(Int, rand(rng, observation(p.sld, sp))/p.binsize)
+generate_o(p::DSimpleLightDark, a, sp, rng::AbstractRNG) = generate_o(p, sp, rng)
+function POMDPs.gen(p::DSimpleLightDark, s, a, rng::AbstractRNG)
     sp = generate_s(p, s, a, rng)
     o = generate_o(p, sp, rng)
     r = reward(p, s, a, sp)
     return sp, o, r
 end
 
-function POMDPModelTools.obs_weight(p::DSimpleLightDark, sp::Int, o::Int)
+function POMDPTools.obs_weight(p::DSimpleLightDark, sp::Int, o::Int)
     cod = observation(p.sld, sp)
     return cdf(cod, (o+1)*p.binsize) - cdf(cod, o*p.binsize)
 end
@@ -64,14 +64,14 @@ end
 POMDPs.discount(p::DSimpleLightDark) = discount(p.sld)
 POMDPs.isterminal(p::DSimpleLightDark, s::Number) = isterminal(p.sld, s)
 POMDPs.actions(p::DSimpleLightDark) = actions(p.sld)
-POMDPs.n_actions(p::DSimpleLightDark) = n_actions(p.sld)
+n_actions(p::DSimpleLightDark) = n_actions(p.sld)
 POMDPs.actionindex(p::DSimpleLightDark, a::Int) = actionindex(p.sld, a)
 POMDPs.states(p::DSimpleLightDark) = states(p.sld)
-POMDPs.n_states(p::DSimpleLightDark) = n_states(p.sld)
+n_states(p::DSimpleLightDark) = n_states(p.sld)
 POMDPs.stateindex(p::DSimpleLightDark, s::Int) = stateindex(p.sld, s)
 POMDPs.transition(p::DSimpleLightDark, s::Int, a::Int) = transition(p.sld, s, a)
 POMDPs.reward(p::DSimpleLightDark, s, a) = reward(p.sld, s, a)
-POMDPs.initialstate_distribution(p::DSimpleLightDark) = initial_state_distribution(p.sld)
+POMDPs.initialstate(p::DSimpleLightDark) = initial_state_distribution(p.sld)
 
 struct LDHeuristic <: Policy
     p::SimpleLightDark

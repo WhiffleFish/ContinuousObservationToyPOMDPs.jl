@@ -68,9 +68,9 @@ end
 POMDPs.actionindex(::AbstractTigerPOMDP, a) = actioninds[a]
 POMDPs.obsindex(::DiscreteTiger, o) = obsinds[o]
 
-POMDPs.initialstate_distribution(m::AbstractTigerPOMDP) = POMDPModelTools.Uniform((:left, :right))
-function POMDPs.initialstate_distribution(m::AbstractTimedTigerPOMDP)
-    POMDPModelTools.Uniform((t, 0) for t in (:left,:right))
+POMDPs.initialstate(::AbstractTigerPOMDP) = POMDPTools.Uniform((:left, :right))
+function POMDPs.initialstate(::AbstractTimedTigerPOMDP)
+    POMDPTools.Uniform((t, 0) for t in (:left,:right))
 end
 
 function POMDPs.transition(m::AbstractTigerPOMDP, s, a)

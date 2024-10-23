@@ -1,10 +1,9 @@
 module ContinuousObservationToyPOMDPs
 
 using POMDPs
-using POMDPModelTools
+using POMDPTools
 using Parameters
 using Random
-using POMDPPolicies
 using QMDP
 using ParticleFilters
 using StaticArrays
