@@ -3,8 +3,7 @@ using ContinuousObservationToyPOMDPs
 using ParticleFilters
 using QMDP
 using POMDPs
-using POMDPSimulators
-using POMDPTesting
+using POMDPTools
 
 sld = SimpleLightDark()
 @test isterminal(sld, sld.radius+1)
@@ -15,7 +14,7 @@ for (s, b, a, r, sp, o) in stepthrough(sld, p, filter, "s,b,a,r,sp,o", max_steps
     @show mean(b)
 end
 
-qp = solve(QMDPSolver(), sld, verbose=true)
+qp = solve(QMDPSolver(), sld)
 for (s, b, a, r, sp, o) in stepthrough(sld, qp, "s,b,a,r,sp,o", max_steps=10)
     @show (s, a, r, sp, o)
     @show b
@@ -44,8 +43,8 @@ for (s, b, a, r, sp, o, t) in stepthrough(m, qp, "s,b,a,r,sp,o,t", max_steps=100
     @show (t=t, s=s, a=a, r=r, sp=sp, o=o)
 end
 
-trans_prob_consistency_check(COTigerPOMDP())
-probability_check(DOTigerPOMDP())
+has_consistent_transition_distributions(COTigerPOMDP())
+has_consistent_distributions(DOTigerPOMDP())
 # these don't work for problems with terminal states like this :'(
-trans_prob_consistency_check(TimedCOTigerPOMDP())
-probability_check(TimedDOTigerPOMDP())
+has_consistent_transition_distributions(TimedCOTigerPOMDP())
+has_consistent_distributions(TimedDOTigerPOMDP())
