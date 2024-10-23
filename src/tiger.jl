@@ -2,7 +2,7 @@ abstract type AbstractTigerPOMDP{S, O} <: POMDP{S, Symbol, O} end
 
 # Infinite Horizon
 
-@with_kw struct COTigerPOMDP <: AbstractTigerPOMDP{Symbol, Float64}
+Base.@kwdef struct COTigerPOMDP <: AbstractTigerPOMDP{Symbol, Float64}
     r_wait::Float64             = -1.0
     r_listen::Float64           = -2.0
     r_findtiger::Float64        = -100.0
@@ -11,7 +11,7 @@ abstract type AbstractTigerPOMDP{S, O} <: POMDP{S, Symbol, O} end
     discount::Float64           = 0.95
 end
 
-@with_kw struct DOTigerPOMDP <: AbstractTigerPOMDP{Symbol, Symbol}
+Base.@kwdef struct DOTigerPOMDP <: AbstractTigerPOMDP{Symbol, Symbol}
     r_wait::Float64             = -1.0
     r_listen::Float64           = -2.0
     r_findtiger::Float64        = -100.0
@@ -24,7 +24,7 @@ end
 
 abstract type AbstractTimedTigerPOMDP{O} <: AbstractTigerPOMDP{Tuple{Symbol,Int}, O} end
 
-@with_kw struct TimedCOTigerPOMDP <: AbstractTimedTigerPOMDP{Float64}
+Base.@kwdef struct TimedCOTigerPOMDP <: AbstractTimedTigerPOMDP{Float64}
     r_wait::Float64             = -1.0
     r_listen::Float64           = -2.0
     r_findtiger::Float64        = -100.0
@@ -34,7 +34,7 @@ abstract type AbstractTimedTigerPOMDP{O} <: AbstractTigerPOMDP{Tuple{Symbol,Int}
     discount::Float64           = 0.95
 end
 
-@with_kw struct TimedDOTigerPOMDP <: AbstractTimedTigerPOMDP{Symbol}
+Base.@kwdef struct TimedDOTigerPOMDP <: AbstractTimedTigerPOMDP{Symbol}
     r_wait::Float64             = -1.0
     r_listen::Float64           = -2.0
     r_findtiger::Float64        = -100.0

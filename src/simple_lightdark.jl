@@ -1,4 +1,4 @@
-@with_kw struct SimpleLightDark <: POMDPs.POMDP{Int,Int,Float64}
+Base.@kwdef struct SimpleLightDark <: POMDPs.POMDP{Int,Int,Float64}
     discount::Float64       = 0.95
     correct_r::Float64      = 100.0
     incorrect_r::Float64    = -100.0
@@ -42,7 +42,7 @@ function POMDPs.initialstate(p::SimpleLightDark)
     return SparseCat(div(-p.radius,2):div(p.radius,2), ps)
 end
 
-@with_kw struct DSimpleLightDark <: POMDPs.POMDP{Int, Int, Int}
+Base.@kwdef struct DSimpleLightDark <: POMDPs.POMDP{Int, Int, Int}
     sld::SimpleLightDark = SimpleLightDark()
     binsize::Float64     = 1.0
 end

@@ -2,7 +2,6 @@ module ContinuousObservationToyPOMDPs
 
 using POMDPs
 using POMDPTools
-using Parameters
 using Random
 using QMDP
 using ParticleFilters
